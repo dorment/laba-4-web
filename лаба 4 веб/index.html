@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Лабораторная работа по JS</title>
+    <style>
+      /* Обычный, не слишком сложный CSS без наворотов и переменных */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 20px;
+      }
+      .task-block {
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      h2 {
+        font-size: 18px;
+        color: #333;
+      }
+      .result {
+        background-color: #eee;
+        padding: 10px;
+        margin-top: 10px;
+        font-family: monospace;
+      }
+      button {
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Лабораторная работа: основы JavaScript</h1>
+    <p>Откройте консоль (F12), чтобы увидеть дополнительные логи.</p>
+
+    <div class="task-block">
+      <h2>Задание 1. Приветствие</h2>
+      <div class="result" id="out1"></div>
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 2. Функция суммы</h2>
+      <div class="result" id="out2"></div>
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 3. Чётные числа массива</h2>
+      <div class="result" id="out3"></div>
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 4. Объект «студент»</h2>
+      <div class="result" id="out4"></div>
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 5. Смена цвета фона</h2>
+      <button id="colorBtn">Сменить цвет фона</button>
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 6. Проверка email</h2>
+      <input type="text" id="emailInput" placeholder="Введите email" />
+      <button id="emailBtn">Отправить</button>
+      <div class="result" id="out6"></div>
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 7. Счётчик кликов</h2>
+      <button id="counterBtn">Кликни меня</button>
+      <span id="counterValue" style="font-size: 20px; margin-left: 10px"
+        >0</span
+      >
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 8. Загрузка постов (fetch)</h2>
+      <button id="fetchBtn">Загрузить</button>
+      <div class="result" id="out8"></div>
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 9. Асинхронная пауза</h2>
+      <button id="asyncBtn">Ждать 2 секунды</button>
+      <div class="result" id="out9"></div>
+    </div>
+
+    <div class="task-block">
+      <h2>Задание 10. Класс Car</h2>
+      <div class="result" id="out10"></div>
+    </div>
+
+    <script>
+      // --- Задание 1 ---
+      console.log("Привет, мир! Лабораторная работа запущена.");
+      document.getElementById("out1").innerHTML =
+        "Привет, мир! Лабораторная работа запущена.";
+
+      // --- Задание 2 ---
+      function sum(a, b) {
+        return a + b;
+      }
+      let resultSum = sum(5, 7);
+      console.log("Сумма: " + resultSum);
+      document.getElementById("out2").innerHTML = "sum(5, 7) = " + resultSum;
+
+      // --- Задание 3 ---
+      let numbers = [3, 8, 12, 7, 20];
+      let evens = [];
+      // Используем обычный цикл for вместо .filter() - студенты обычно пишут так
+      for (let i = 0; i < numbers.length; i++) {
+        if (numbers[i] % 2 === 0) {
+          evens.push(numbers[i]);
+        }
+      }
+      console.log("Массив: " + numbers);
+      console.log("Чётные: " + evens);
+      document.getElementById("out3").innerHTML = "Чётные числа: " + evens;
+
+      // --- Задание 4 ---
+      let student = {
+        name: "Ислам",
+        age: 19,
+        greet: function () {
+          return (
+            "Привет! Меня зовут " + this.name + ", мне " + this.age + " лет."
+          );
+        },
+      };
+      console.log(student.greet());
+      document.getElementById("out4").innerHTML = student.greet();
+
+      // --- Задание 5 ---
+      let colors = ["#f4f4f9", "#fde68a", "#bbf7d0", "#bfdbfe", "#fbcfe8"];
+      let colorIndex = 0;
+      document.getElementById("colorBtn").onclick = function () {
+        colorIndex++;
+        if (colorIndex >= colors.length) {
+          colorIndex = 0;
+        }
+        document.body.style.backgroundColor = colors[colorIndex];
+      };
+
+      // --- Задание 6 ---
+      document.getElementById("emailBtn").onclick = function () {
+        let emailValue = document.getElementById("emailInput").value;
+        let out6 = document.getElementById("out6");
+
+        if (emailValue === "") {
+          out6.innerHTML = "Ошибка: пустое поле!";
+          out6.style.color = "red";
+        } else {
+          out6.innerHTML = "Email принят: " + emailValue;
+          out6.style.color = "green";
+        }
+      };
+
+      // --- Задание 7 ---
+      let count = 0;
+      document.getElementById("counterBtn").onclick = function () {
+        count = count + 1;
+        document.getElementById("counterValue").innerHTML = count;
+      };
+
+      // --- Задание 8 ---
+      document.getElementById("fetchBtn").onclick = function () {
+        let out8 = document.getElementById("out8");
+        out8.innerHTML = "Загрузка...";
+
+        // Заменил стрелочные функции на обычные function()
+        fetch("https://jsonplaceholder.typicode.com/posts")
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            out8.innerHTML = "Получено постов: " + data.length + "<br><br>";
+            // Выводим только первые три, используя обычный цикл
+            for (let i = 0; i < 3; i++) {
+              out8.innerHTML +=
+                "Пост " + data[i].id + ": " + data[i].title + "<br>";
+            }
+          })
+          .catch(function (error) {
+            out8.innerHTML = "Ошибка загрузки";
+            console.log(error);
+          });
+      };
+
+      // --- Задание 9 ---
+      function delay() {
+        return new Promise(function (resolve) {
+          setTimeout(resolve, 2000);
+        });
+      }
+
+      document.getElementById("asyncBtn").onclick = async function () {
+        let out9 = document.getElementById("out9");
+        out9.innerHTML = "Ждём 2 секунды...";
+        await delay();
+        out9.innerHTML = "Прошло 2 секунды — вот ваш текст!";
+        console.log("Прошло 2 секунды!");
+      };
+
+      // --- Задание 10 ---
+      class Car {
+        constructor(model, year) {
+          this.model = model;
+          this.year = year;
+        }
+        info() {
+          return "Машина: " + this.model + ", год: " + this.year;
+        }
+      }
+      let myCar = new Car("Toyota Camry", 2020);
+      console.log(myCar.info());
+      document.getElementById("out10").innerHTML = myCar.info();
+    </script>
+  </body>
+</html>
